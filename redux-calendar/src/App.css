@@ -2,3 +2,35 @@ td.e-header-cells {
   background: #2288c4 !important;
   color: #fff !important;
 }
+input#Color {
+  height: 10px !important;
+  -webkit-appearance: square-button;
+  width: 44px;
+  background-color: buttonface;
+  cursor: default;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(255, 255, 255);
+  border-image: initial;
+  padding: 0px 0px;
+}
+.template-wrap {
+  width: 100% !important;
+}
+input.form-control:hover {
+  border-bottom: solid;
+  border-color: #ff5555;
+  border-top: dimgrey;
+  border-left: dimgray;
+  border-right: dimgray;
+  border-radius: 0px;
+}.e-subject-wrap>div>label>h5 {
+  font-size: 13px;
+  font-weight: bold;
+}
+.e-appointment {
+  height: 20px !important;
+}
+.template-wrap {
+  text-align: center;
+}

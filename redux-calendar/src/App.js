@@ -3,6 +3,7 @@ import './App.css';
 import Calendar from './component/Calendar';
 import {createStore, combineReducers} from 'redux';
 import {Provider,connect} from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
 //ACTIONS  TYPE
 const ADD_REMAINDER= 'add_remainder';
 const DELETE_REMAINDER= 'delete_remainder';
@@ -22,7 +23,7 @@ const deleteRemainder = () =>(
     }
     );
 //REDUCER
-const managementReducer = (state = {remainders:[{Id:1,Subject: 'Ejemplo 1', StartTime: new Date(2020,3,3,2,2),EndTime: new Date(2020,3,3,2,30), Location: 'Yoga center', color:'#fff'}]}, action, newRemainder) =>{
+const managementReducer = (state = {remainders:[{Id:1,Subject: 'Ejemplo 1', StartTime: new Date(2020,3,3,2,2),EndTime: new Date(2020,3,3,2,30), Location: 'Yoga center',Description:'sdf', Color:'#FF4500'}]}, action, newRemainder) =>{
   switch(action.type){
       case ADD_REMAINDER:
        
