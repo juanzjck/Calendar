@@ -101,7 +101,7 @@ const editorWindowsTemplate = (props)=>{
                       Remainder title
                     </td>
                     <td>
-                        <input  id="Color"  className="e-field e-input" type="text" id="Subject" name="Subject" max="15"/>
+                        <input  id="Color"  className="e-field e-input" type="text" id="Subject" name="Subject"  minlength="1" maxlength="10"/>
                     </td>
                 </tr>
                 <tr>
