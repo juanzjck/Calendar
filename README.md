@@ -7,10 +7,19 @@ A simple calendar app.
 -Responsive
 
 <h2>Dependences</h2>
-
+<ul>
+ <li>
 -@syncfusion/ej2-react-schedule v 17.4.51
+ </li>
+  <li>
 -Redux v 4.0.5
+ </li>
+ <li>
+
 -Redux-react v 7.2.0
+ </li>
+ </ul>
+
 
 
 <h2>How to install</h2>
