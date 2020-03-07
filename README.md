@@ -3,8 +3,16 @@
 A simple calendar app.
 
 <h2>Feactures</h2>
+<ul>
+ <li>
 -Add, delete and edit events (Remainders)
+ </li>
+  <li>
 -Responsive
+ </li>
+
+ </ul>
+
 
 <h2>Dependences</h2>
 <ul>
