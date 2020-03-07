@@ -41,7 +41,7 @@ const content =(props)=>{
               <form onsubmit="return validateForm()" className="e-schedule-form">
               <div className="form-group">
                     <label > Remainder title</label>
-                    <input type="text" className="form-control subject e-field"  type="text" name="Subject" aria-describedby="Title"  placeholder="Title"/>
+                    <input type="text" className="form-control subject e-field"  name="Subject" aria-describedby="Title"  placeholder="Title" minlength="1" maxlength="10"/>
                 </div>
               
                 <div className="form-group">
@@ -50,7 +50,7 @@ const content =(props)=>{
                 </div>
                 <div  className="form-group">
                 <label>Description (max 30 chars)</label>
-                      <input className="form-control location e-field" type="text" name="Description" placeholder="Description..." max="30"/>
+                      <input className="form-control location e-field" type="text" name="Description" placeholder="Description..." minlength="1" maxlength="30"/>
                     </div>
                 <div className="form-group">
                     
@@ -101,7 +101,7 @@ const editorWindowsTemplate = (props)=>{
                       Remainder title
                     </td>
                     <td>
-                        <input  id="Color"  className="e-field e-input" type="text" id="Subject" name="Subject" />
+                        <input  id="Color"  className="e-field e-input" type="text" id="Subject" name="Subject" max="15"/>
                     </td>
                 </tr>
                 <tr>
@@ -135,7 +135,7 @@ const editorWindowsTemplate = (props)=>{
                     Description (max 30 chars)
                     </td>
                     <td>
-                    <textarea  id="Description"  name="Description" className="e-field e-input"  max="30" type="text"  />
+                    <textarea  id="Description"  name="Description" className="e-field e-input"   type="text" minlength="1" maxlength="30"/>
                     </td>
                 </tr>
                 <tr>
