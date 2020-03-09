@@ -65,20 +65,27 @@ class Wather extends React.Component {
     }
     getWatherUI=()=>{
         return  (this.state.main!='')?<div>
-             <label><h5>Wather</h5></label>
-            <p>{this.state.main} <br/> {this.state.temp}°C   <br/> {this.state.speedWind}m/s</p>
-        </div>:<div>
-        <label><h5>Wather</h5></label>
-            <p>There are no info</p>
-        </div>;
+        <label>
+            <h5>Wather</h5></label>
+        <p>{this.state.main}
+            <br/> {this.state.temp}°C
+            <br/> {this.state.speedWind}m/s</p>
+    </div>:
+    <div>
+        <label>
+            <h5>Wather</h5></label>
+        <p>There are no info</p>
+    </div>;
     }
     render() { 
         
-        return ( <div>  
-            
-            {this.getWatherUI()}
-         
-        </div> );
+        return (
+            <div>
+
+                  {this.getWatherUI()}
+
+            </div>
+         );
     }
 }
  
