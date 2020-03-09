@@ -17,10 +17,13 @@
     "react-color": "^2.18.0",
     "react-dom": "^16.13.0",
     "react-input-color": "^2.0.29",
+    "react-open-weather": "^0.6.2",
     "react-redux": "^7.2.0",
     "react-scripts": "3.4.0",
+    "react-xml-parser": "^1.1.6",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "xml2js": "^0.4.23"
   },
   "scripts": {
     "start": "react-scripts start",

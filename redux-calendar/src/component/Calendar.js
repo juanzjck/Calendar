@@ -3,6 +3,7 @@ import React from 'react';
 import {Inject,ViewDirective,ViewsDirective,ScheduleComponent, Day, Week, WorkWeek,Month, Agenda, popupClose} from '@syncfusion/ej2-react-schedule';
 import {L10n} from '@syncfusion/ej2-base';
 import {DateTimePickerComponent} from "@syncfusion/ej2-react-calendars";
+import Wather from '../component/Wather';
 /*Edit translate*/
 L10n.load({
     'en-US':{
@@ -18,8 +19,11 @@ L10n.load({
 /* End Vaildidation remainder description */
 /*Template for a quickInfo */
 const header = (props)=>{
+ 
     return(
+        
         <div style={colorDrawer(props.Color)}>
+ 
         {props.elementType === 'cell' ?
             <div className="e-cell-header">
             <div className="e-header-icon-wrapper" >
@@ -38,10 +42,10 @@ const content =(props)=>{
     return (<div>
         {props.elementType === 'cell' ?
               <div className="e-cell-content e-template custom-event-editor" >
-              <form onsubmit="return validateForm()" className="e-schedule-form">
+              <form  className="e-schedule-form">
               <div className="form-group">
                     <label > Remainder title</label>
-                    <input type="text" className="form-control subject e-field"  name="Subject" aria-describedby="Title"  placeholder="Title" minlength="1" maxlength="10"/>
+                    <input type="text" className="form-control subject e-field"  name="Subject" aria-describedby="Title"  placeholder="Title" minLength="1" maxLength="10"/>
                 </div>
               
                 <div className="form-group">
@@ -50,7 +54,7 @@ const content =(props)=>{
                 </div>
                 <div  className="form-group">
                 <label>Description (max 30 chars)</label>
-                      <input className="form-control location e-field" type="text" name="Description" placeholder="Description..." minlength="1" maxlength="30"/>
+                      <input className="form-control location e-field" type="text" name="Description" placeholder="Description..." minLength="1" maxLength="30"/>
                     </div>
                 <div className="form-group">
                     
@@ -67,7 +71,10 @@ const content =(props)=>{
                   <div className="location"><label><h5>Location (city):</h5></label><p>  {props.Location}</p></div> : ""}
                 {(props.Description !== undefined) ?
                   <div className="description"><label ><h5>Description:</h5></label><p>  {props.Description}</p></div> : ""}
-               
+                
+                 
+                    <Wather city={props.Location} date={props.StartTime} />
+                
               </div>
               <div className="e-event-footer">
                     <button className="e-event-edit" title="Edit">Edit</button>
@@ -101,7 +108,7 @@ const editorWindowsTemplate = (props)=>{
                       Remainder title
                     </td>
                     <td>
-                        <input  id="Color"  className="e-field e-input" type="text" id="Subject" name="Subject"  minlength="1" maxlength="10"/>
+                        <input  id="Color"  className="e-field e-input" type="text" id="Subject" name="Subject"  minLength="1" maxLength="10"/>
                     </td>
                 </tr>
                 <tr>
@@ -135,7 +142,7 @@ const editorWindowsTemplate = (props)=>{
                     Description (max 30 chars)
                     </td>
                     <td>
-                    <textarea  id="Description"  name="Description" className="e-field e-input"   type="text" minlength="1" maxlength="30"/>
+                    <textarea  id="Description"  name="Description" className="e-field e-input"   type="text" minLength="1" maxLength="30"/>
                     </td>
                 </tr>
                 <tr>
