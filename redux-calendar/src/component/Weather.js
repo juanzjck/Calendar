@@ -1,7 +1,7 @@
 import React from 'react';
 import  WATHER_KEY from '../key';
 
-class Wather extends React.Component {
+class Weather extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -39,7 +39,7 @@ class Wather extends React.Component {
             }
           
         
-            if(dateText==strings[0]){
+            if(dateText===strings[0]){
                     selectedDateWather=json.list[i];
             }
         }
@@ -64,7 +64,7 @@ class Wather extends React.Component {
        
     }
     getWatherUI=()=>{
-        return  (this.state.main!='')?<div>
+        return  (this.state.main!=='')?<div>
         <label>
             <h5>Wather</h5></label>
         <p>{this.state.main}
@@ -89,4 +89,4 @@ class Wather extends React.Component {
     }
 }
  
-export default Wather;
+export default Weather;

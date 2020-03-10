@@ -1,9 +1,11 @@
 
 import React from 'react';
-import {Inject,ViewDirective,ViewsDirective,ScheduleComponent, Day, Week, WorkWeek,Month, Agenda, popupClose} from '@syncfusion/ej2-react-schedule';
+import {Inject,ViewDirective,ViewsDirective,ScheduleComponent, Day, Week, WorkWeek,Month, Agenda} from '@syncfusion/ej2-react-schedule';
 import {L10n} from '@syncfusion/ej2-base';
 import {DateTimePickerComponent} from "@syncfusion/ej2-react-calendars";
-import Wather from '../component/Wather';
+import Weather from '../component/Weather';
+import {connect} from 'react-redux';
+
 /*Edit translate*/
 L10n.load({
     'en-US':{
@@ -39,10 +41,12 @@ const header = (props)=>{
     );
 }
 const content =(props)=>{
+   
     return (<div>
         {props.elementType === 'cell' ?
               <div className="e-cell-content e-template custom-event-editor">
-              <form className="e-schedule-form">
+              <form className="e-schedule-form"  >
+
                   <div className="form-group">
                       <label> Remainder title</label>
                       <input type="text" className="form-control subject e-field" name="Subject" aria-describedby="Title" placeholder="Title" minLength="1" maxLength="10" />
@@ -82,12 +86,13 @@ const content =(props)=>{
                       <p> {props.Description}</p>
                   </div> : ""}
           
-                  <Wather city={props.Location} date={props.StartTime} />
+                  <Weather city={props.Location} date={props.StartTime} />
           
               </div>
+            
               <div className="e-event-footer">
-                  <button className="e-event-edit" title="Edit">Edit</button>
-                  <button className="e-event-delete" title="Delete">Delete</button>
+                  <button className="e-event-edit" onClick={()=>getProps().change(props.Id)} title="Edit">Edit</button>
+                  <button className="e-event-delete" onClick={()=>getProps().delete(props.Id)} title="Delete">Delete</button>
               </div>
           </div>}
           </div>);
@@ -95,16 +100,17 @@ const content =(props)=>{
 const footer = (props) =>{
     return (<div>
         {props.elementType === 'cell' ?
-              <div className="e-cell-footer">
+              <div className="e-cell-footer">'
+             
                 <button className="e-event-details" title="Extra Details">Extra Details</button>
-                <button className="e-event-create" title="Add">Add</button>
+                <button className="e-event-create" onClick={()=>getProps().add(props)}  title="Add">Add</button>
               </div>
               :""}
             </div>);
 
 }
 /*End of template for a quickInfo */
-/* Tempakte for editor pop up*/
+/*Tempakte for editor pop up*/
 
 const editorWindowsTemplate = (props)=>{
     return(
@@ -182,9 +188,20 @@ const remainderTemplate =(props)=>{
     <div className="template-wrap" style={colorDrawer(props.Color)}><div>{props.Subject}</div></div>
     );
 }
-/**/
+/*Local props*/
+var localProps;
+const setProps=(props)=>{
+    localProps=props;
+}
+const getProps=()=>{
+    return localProps;
+}
 const Calendar = (props) => (
-    <ScheduleComponent eventSettings={{dataSource:props.remainders, template:remainderTemplate.bind(this)}} editorTemplate={editorWindowsTemplate.bind(this)} quickInfoTemplates={{ header: header.bind(this), content: content.bind(this), footer: footer.bind(this)} } currentView='Month' >
+
+    <div>      
+        {setProps(props)}
+        <ScheduleComponent eventSettings={{dataSource:props.remainders, template:remainderTemplate.bind(this)}} editorTemplate={editorWindowsTemplate.bind(this)} quickInfoTemplates={{ header: header.bind(this), content: content.bind(this), footer: footer.bind(this)} }   currentView='Month' >
+        
          <ViewsDirective>
          <ViewDirective option='Month' />
         <ViewDirective option='Day' />
@@ -194,11 +211,22 @@ const Calendar = (props) => (
          </ViewsDirective>
         <Inject services={[Month,Day,Week,WorkWeek,Agenda]} />
     </ScheduleComponent>
+    </div>
 
-
+    
 );
    
          
-
- 
-export default Calendar;
+const mapStateToProps=state=>{
+    return{
+      remainders: state.management.remainders,
+  
+    }
+  };
+  
+  const mapDispatchToProps = dispatch =>({
+    add: (remainder) =>dispatch({type: 'add_remainder',playload:remainder}),
+    delete: (id) => dispatch({type: 'delete_remainder',playload:id}),
+    change: (id)=>dispatch({type: 'change_remainder',playload:id})
+  });
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar)
