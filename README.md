@@ -26,7 +26,6 @@ A simple calendar app.
 -Redux v 4.0.5
  </li>
  <li>
-
 -Redux-react v 7.2.0
  </li>
  </ul>
