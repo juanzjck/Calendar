@@ -17,7 +17,7 @@ class Weather extends React.Component {
         const apiURL='http://api.openweathermap.org/data/2.5/forecast?q='+e.toLowerCase()+'&appid='+WATHER_KEY;
         var res = await fetch(apiURL);
         var json = await res.json();
-        var selectedDateWather;
+        var selectedDateWather=null;
        
         for(let i=0;i<json.list.length;i++){
             var strings=(json.list[i].dt_txt).split(' ');
@@ -40,17 +40,46 @@ class Weather extends React.Component {
           
         
             if(dateText===strings[0]){
+      
                     selectedDateWather=json.list[i];
+                    break;
             }
+           
         }
-       await this.setState(
-            {
-                main:selectedDateWather.weather[0].main,
-                temp:selectedDateWather.main.temp,
-                icon:selectedDateWather.weather[0].icon,
-                speedWind:selectedDateWather.wind.speed
-            }
-        )
+   
+        if(selectedDateWather!==null){
+           
+            await this.setState(
+                {
+                    main:selectedDateWather.weather[0].main,
+                    temp:selectedDateWather.main.temp,
+                    icon:selectedDateWather.weather[0].icon,
+                    speedWind:selectedDateWather.wind.speed
+                }
+            )
+        }
+        //get current weather
+        if(selectedDateWather===null){
+                
+                 var today = new Date();
+               
+                if (this.props.date.getDate()===today.getDate()){
+                    const apiURLCurrentWeather='http://api.openweathermap.org/data/2.5/weather?q='+e.toLowerCase()+'&appid='+WATHER_KEY;
+                     res = await fetch(apiURLCurrentWeather);
+                     json = await res.json();
+
+                    await this.setState(    
+                        {
+                            main:json.weather[0].main,
+                            temp:json.main.temp,
+                            icon:json.weather[0].icon,
+                            speedWind:json.wind.speed
+                        }
+                    )     
+                }
+
+        }
+   
         }catch(err){
            
         }

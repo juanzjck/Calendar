@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@syncfusion/ej2-base": "^17.4.51",
+    "@syncfusion/ej2-react-buttons": "^17.4.51",
     "@syncfusion/ej2-react-calendars": "^17.4.51",
     "@syncfusion/ej2-react-schedule": "^17.4.51",
     "@testing-library/jest-dom": "^4.2.4",

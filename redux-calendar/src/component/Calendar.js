@@ -13,12 +13,12 @@ L10n.load({
             'saveButton' : 'Add',
             'cancelButton' : 'Close',
             'deleteButton' : 'Close',
-            'newEvent' : 'Add remainder',
+            'newEvent' : 'Add reminders',
         }
     }
 });
 
-/* End Vaildidation remainder description */
+/* End Vaildidation reminders description */
 /*Template for a quickInfo */
 const header = (props)=>{
  
@@ -48,7 +48,7 @@ const content =(props)=>{
               <form className="e-schedule-form"  >
 
                   <div className="form-group">
-                      <label> Remainder title</label>
+                      <label> reminders title</label>
                       <input type="text" className="form-control subject e-field" name="Subject" aria-describedby="Title" placeholder="Title" minLength="1" maxLength="10" />
                   </div>
           
@@ -120,7 +120,7 @@ const editorWindowsTemplate = (props)=>{
       <tbody>
           <tr>
               <td className="e-textlabel">
-                  Remainder title
+                  reminders title
               </td>
               <td>
                   <input id="Color" className="e-field e-input" type="text" id="Subject" name="Subject" minLength="1" maxLength="10" />
@@ -183,11 +183,13 @@ const colorDrawer = (color)=>{
 }
 
 /** template for a reaminder caelendar view*/
-const remainderTemplate =(props)=>{
+const remindersTemplate =(props)=>{
     return (
     <div className="template-wrap" style={colorDrawer(props.Color)}><div>{props.Subject}</div></div>
     );
 }
+
+
 /*Local props*/
 var localProps;
 const setProps=(props)=>{
@@ -196,11 +198,15 @@ const setProps=(props)=>{
 const getProps=()=>{
     return localProps;
 }
-const Calendar = (props) => (
 
-    <div>      
-        {setProps(props)}
-        <ScheduleComponent eventSettings={{dataSource:props.remainders, template:remainderTemplate.bind(this)}} editorTemplate={editorWindowsTemplate.bind(this)} quickInfoTemplates={{ header: header.bind(this), content: content.bind(this), footer: footer.bind(this)} }   currentView='Month' >
+
+const Calendar = (props) => {
+    setProps(props);
+ 
+    return(
+        <div>      
+     
+        <ScheduleComponent eventSettings={{dataSource:props.reminders, template:remindersTemplate.bind(this)}} editorTemplate={editorWindowsTemplate.bind(this)} quickInfoTemplates={{ header: header.bind(this), content: content.bind(this), footer: footer.bind(this)} }   currentView='Month' >
         
          <ViewsDirective>
          <ViewDirective option='Month' />
@@ -212,21 +218,24 @@ const Calendar = (props) => (
         <Inject services={[Month,Day,Week,WorkWeek,Agenda]} />
     </ScheduleComponent>
     </div>
+    );
+}
 
     
-);
-   
+
+    
+
          
 const mapStateToProps=state=>{
     return{
-      remainders: state.management.remainders,
+      reminders: state.management.reminders,
   
     }
   };
   
   const mapDispatchToProps = dispatch =>({
-    add: (remainder) =>dispatch({type: 'add_remainder',playload:remainder}),
-    delete: (id) => dispatch({type: 'delete_remainder',playload:id}),
-    change: (id)=>dispatch({type: 'change_remainder',playload:id})
+    add: (reminders) =>dispatch({type: 'add_reminder',playload:reminders}),
+    delete: (id) => dispatch({type: 'delete_reminder',playload:id}),
+    change: (id)=>dispatch({type: 'change_reminder',playload:id})
   });
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar)
