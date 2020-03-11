@@ -8,7 +8,10 @@ A simple calendar app.
 -Add, delete and edit events (Reminders)
  </li>
   <li>
--Responsive
+-Custom color for each reminder
+ </li>
+  <li>
+-Weather  based on the city and reminder's date
  </li>
 
  </ul>
