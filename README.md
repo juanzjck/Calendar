@@ -5,7 +5,7 @@ A simple calendar app.
 <h2>Feactures</h2>
 <ul>
  <li>
--Add, delete and edit events (Remainders)
+-Add, delete and edit events (Reminders)
  </li>
   <li>
 -Responsive
