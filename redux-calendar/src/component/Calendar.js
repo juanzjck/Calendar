@@ -1,241 +1,284 @@
-
 import React from 'react';
-import {Inject,ViewDirective,ViewsDirective,ScheduleComponent, Day, Week, WorkWeek,Month, Agenda} from '@syncfusion/ej2-react-schedule';
-import {L10n} from '@syncfusion/ej2-base';
-import {DateTimePickerComponent} from "@syncfusion/ej2-react-calendars";
-import Weather from '../component/Weather';
-import {connect} from 'react-redux';
-
-/*Edit translate*/
-L10n.load({
-    'en-US':{
-        'schedule':{
-            'saveButton' : 'Add',
-            'cancelButton' : 'Close',
-            'deleteButton' : 'Close',
-            'newEvent' : 'Add reminders',
-        }
-    }
-});
-
-/* End Vaildidation reminders description */
-/*Template for a quickInfo */
-const header = (props)=>{
- 
-    return(
-        
-        <div style={colorDrawer(props.Color)}>
- 
-        {props.elementType === 'cell' ?
-            <div className="e-cell-header">
-            <div className="e-header-icon-wrapper" >
-              <button className="e-close" title="Close"></button>
-            </div>
-          </div> :
-            <div className="e-event-header">
-            <div className="e-header-icon-wrapper">
-              <button className="e-close" title="CLOSE"></button>
-            </div>
-          </div>}
-    </div>
-    );
-}
-const content =(props)=>{
-   
-    return (<div>
-        {props.elementType === 'cell' ?
-              <div className="e-cell-content e-template custom-event-editor">
-              <form className="e-schedule-form"  >
-
-                  <div className="form-group">
-                      <label> reminders title</label>
-                      <input type="text" className="form-control subject e-field" name="Subject" aria-describedby="Title" placeholder="Title" minLength="1" maxLength="10" />
-                  </div>
-          
-                  <div className="form-group">
-                      <label> Location (City)</label>
-                      <input className=" form-control location e-field" type="text" name="Location" placeholder="Location" />
-                  </div>
-                  <div className="form-group">
-                      <label>Description (max 30 chars)</label>
-                      <input className="form-control location e-field" type="text" name="Description" placeholder="Description..." minLength="1" maxLength="30" />
-                  </div>
-                  <div className="form-group">
-          
-                      <label>Color</label>
-                      <input className="form-control location e-field" type="color" name="Color" />
-                  </div>
-              </form>
-          </div> :
-          <div className="e-event-content e-template">
-              <div className="e-subject-wrap">
-                  {(props.Subject !== undefined) ?
-                  <div className="subject">
-                      <label>
-                          <h5>Title</h5></label>
-                      <p> {props.Subject}</p>
-                  </div> : ""} {(props.Location !== undefined) ?
-                  <div className="location">
-                      <label>
-                          <h5>Location (city):</h5></label>
-                      <p> {props.Location}</p>
-                  </div> : ""} {(props.Description !== undefined) ?
-                  <div className="description">
-                      <label>
-                          <h5>Description:</h5></label>
-                      <p> {props.Description}</p>
-                  </div> : ""}
-          
-                  <Weather city={props.Location} date={props.StartTime} />
-          
-              </div>
-            
-              <div className="e-event-footer">
-                  <button className="e-event-edit" onClick={()=>getProps().change(props.Id)} title="Edit">Edit</button>
-                  <button className="e-event-delete" onClick={()=>getProps().delete(props.Id)} title="Delete">Delete</button>
-              </div>
-          </div>}
-          </div>);
-}
-const footer = (props) =>{
-    return (<div>
-        {props.elementType === 'cell' ?
-              <div className="e-cell-footer">'
-             
-                <button className="e-event-details" title="Extra Details">Extra Details</button>
-                <button className="e-event-create" onClick={()=>getProps().add(props)}  title="Add">Add</button>
-              </div>
-              :""}
-            </div>);
-
-}
-/*End of template for a quickInfo */
-/*Tempakte for editor pop up*/
-
-const editorWindowsTemplate = (props)=>{
-    return(
-
-      <table className="custom-event-editor">
-
-      <tbody>
-          <tr>
-              <td className="e-textlabel">
-                  reminders title
-              </td>
-              <td>
-                  <input id="Color" className="e-field e-input" type="text" id="Subject" name="Subject" minLength="1" maxLength="10" />
-              </td>
-          </tr>
-          <tr>
-              <td className="e-textlabel">
-                  From
-              </td>
-              <td>
-                  <DateTimePickerComponent id="StartTime" data-name="StartTime" className="e-field e-input" value={new Date(props.StartTime || props.startTime)} format="dd/MM/yy hh:mm a"></DateTimePickerComponent>
-              </td>
-          </tr>
-          <tr>
-              <td className="e-textlabel">
-                  To
-              </td>
-              <td>
-                  <DateTimePickerComponent id="EndTime" data-name="EndTime" className="e-field e-input" value={new Date(props.endTime || props.EndTime)} format="dd/MM/yy hh:mm a"></DateTimePickerComponent>
-              </td>
-          </tr>
-          <tr>
-              <td className="e-textlabel">
-                  Location (City)
-              </td>
-              <td>
-                  <input type="text" id="Location" className="e-field e-input" name="Location" />
-              </td>
-          </tr>
-          <tr>
-              <td className="e-textlabel">
-                  Description (max 30 chars)
-              </td>
-              <td>
-                  <textarea id="Description" name="Description" className="e-field e-input" type="text" minLength="1" maxLength="30" />
-              </td>
-          </tr>
-          <tr>
-              <td className="e-textlabel">
-                  Color
-              </td>
-              <td>
-                  <input id="Color" name="Color" className="e-field e-input" type="color" />
-              </td>
-          </tr>
-      </tbody>
-  </table>
-    
-    );
-
-};
-/*Custom color */
-const colorDrawer = (color)=>{
-    return(
-        {
-            background:color,
-        }
-    );
-
-}
-
-/** template for a reaminder caelendar view*/
-const remindersTemplate =(props)=>{
-    return (
-    <div className="template-wrap" style={colorDrawer(props.Color)}><div>{props.Subject}</div></div>
-    );
-}
+import moment from 'moment';
+import reminder from './Reminder';
+import {
+    connect
+} from 'react-redux';
 
 
-/*Local props*/
-var localProps;
-const setProps=(props)=>{
-    localProps=props;
-}
-const getProps=()=>{
-    return localProps;
-}
 
 
-const Calendar = (props) => {
-    setProps(props);
- 
-    return(
-        <div>      
-     
-        <ScheduleComponent eventSettings={{dataSource:props.reminders, template:remindersTemplate.bind(this)}} editorTemplate={editorWindowsTemplate.bind(this)} quickInfoTemplates={{ header: header.bind(this), content: content.bind(this), footer: footer.bind(this)} }   currentView='Month' >
-        
-         <ViewsDirective>
-         <ViewDirective option='Month' />
-        <ViewDirective option='Day' />
-        <ViewDirective option='Week' />
-        <ViewDirective option='WorkWeek' />
-        <ViewDirective option='Agenda' />
-         </ViewsDirective>
-        <Inject services={[Month,Day,Week,WorkWeek,Agenda]} />
-    </ScheduleComponent>
-    </div>
-    );
-}
-
-    
-
-    
-
-         
-const mapStateToProps=state=>{
-    return{
-      reminders: state.management.reminders,
-  
-    }
+class Calendar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { dateObject: moment(), allmonths :moment.months(), showFormNewreminder:false, selectedDay:0}
+  }
+  firstDayOfMonth = () => {
+    let dateObject = this.state.dateObject;
+    let firstDay = moment(dateObject)
+                 .startOf("month")
+                 .format("d"); 
+   return firstDay;
   };
-  
-  const mapDispatchToProps = dispatch =>({
-    add: (reminders) =>dispatch({type: 'add_reminder',playload:reminders}),
-    delete: (id) => dispatch({type: 'delete_reminder',playload:id}),
-    change: (id)=>dispatch({type: 'change_reminder',playload:id})
+  currentDay = () => {  
+    return this.state.dateObject.format("D");
+  };
+  month = () => {
+    return this.state.dateObject.format("MMMM");
+  };
+  MonthList = props => {
+
+    let months = [];
+    props.data.map(data => {
+      months.push(
+        <td
+        key={data}
+        className="calendar-month"
+        onClick={e => {
+          this.setMonth(data);
+        }}
+      >
+        <span>{data}</span>
+      </td>
+      );
+    });
+    let rows = [];
+      let cells = [];
+      months.forEach((row, i) => { 
+        if (i % 3 !== 0 || i === 0) { // except zero index 
+            cells.push(row); 
+        } else { 
+            rows.push(cells); 
+            cells = [];
+            cells.push(row); 
+        }
+    });
+    rows.push(cells); // add last row
+    let monthlist = rows.map((d, i) => {
+      return <tr>{d}</tr>;
   });
+  return (
+    <table className="calendar-month">
+      <thead>
+        <tr>
+          <th colSpan="4">Select a Month</th>
+        </tr>
+      </thead>
+      <tbody>{monthlist}</tbody>
+    </table>
+  );
+  }
+  
+  setMonth = month => {
+    let monthNo = moment.months().indexOf(month);// get month number 
+    let dateObject = Object.assign({}, this.state.dateObject);
+    dateObject = moment(dateObject).set("month", monthNo); // change month value
+    this.setState({
+      dateObject: dateObject // add to state
+    });
+    alert(dateObject);
+  };
+  createNewreminderForm = () =>{
+    let Subject='';
+    let locationCity='';
+    let reminder='';
+    let color='#fff';
+    return(this.state.showFormNewreminder===true?<div class="popup_New_reminder">
+      <div class="modal-content">
+        <div><a onClick={()=>{
+                    let dateObject=this.state.dateObject;
+                    let allmonths=this.state.allmonths;
+                    let showFormNewreminder=false;
+                    let oldDay=this.state.selectedDay;
+                    this.setState({dateObject,allmonths,showFormNewreminder,selectedDay:oldDay});
+        }} className="btn btn-danger">X</a></div>
+        <h1>New reminder</h1>
+        <label>
+           Title
+        </label>
+        <input class="form-control" type="text" placeholder="..." minLength={1}  maxLength={30}  onChange={e=>{Subject=e.target.value}} required></input>
+        <label>
+            reminder
+        </label>
+         <textarea class="form-control" type="text" placeholder="reminder...." minLength={1} onChange={e=>{reminder=e.target.value}}  maxLength={30} required></textarea>
+         <label>
+           Location (City)
+        </label>
+         <input class="form-control" type="text" placeholder="City" onChange={e=>{locationCity=e.target.value}}  required></input>
+         <label>
+           Start time
+         </label>
+         <input
+            id="datetime-local"
+            label="Next appointment"
+            type="datetime-local"
+            defaultValue={  this.stringDefaultStartTime()}
+           
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+           <label>
+           End time
+         </label>
+         <input
+            id="datetime-local"
+            label="Next appointment"
+            type="datetime-local"
+            defaultValue={  this.stringDefaultEndTime()}
+           
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <label>
+            Color
+         </label>
+         <input type="color" onChange={e=>{color=e.target.value}}></input>
+         <button className="newReminderButton btn btn-success" onClick={()=>{this.createNewreminder(1,Subject,locationCity,reminder,color);}}> Save</button>
+        </div>
+      </div>
+      :
+      <div></div>);
+  }
+  stringDefaultStartTime = ()=>{
+    return (this.state.dateObject.month()<=9 && this.state.selectedDay<10?this.state.dateObject.year()+"-0"+(this.state.dateObject.month()+1)+"-0"+this.state.selectedDay+"T10:30"
+    :
+    this.state.dateObject.month()<=9 && this.state.selectedDay>=10?
+    this.state.dateObject.year()+"-0"+(this.state.dateObject.month()+1)+"-"+this.state.selectedDay+"T00:00":
+    this.state.dateObject.month()>9 && this.state.selectedDay<10?
+    this.state.dateObject.year()+"-"+(this.state.dateObject.month()+1)+"-0"+this.state.selectedDay+"T00:00":
+    this.state.dateObject.year()+"-"+(this.state.dateObject.month()+1)+"-"+this.state.selectedDay+"T00:00"
+    );
+  }
+  stringDefaultEndTime = ()=>{
+    return (this.state.dateObject.month()<=9 && this.state.selectedDay<10?this.state.dateObject.year()+"-0"+(this.state.dateObject.month()+1)+"-0"+this.state.selectedDay+"T10:30"
+    :
+    this.state.dateObject.month()<=9 && this.state.selectedDay>=10?
+    this.state.dateObject.year()+"-0"+(this.state.dateObject.month()+1)+"-"+this.state.selectedDay+"T12:00":
+    this.state.dateObject.month()>9 && this.state.selectedDay<10?
+    this.state.dateObject.year()+"-"+(this.state.dateObject.month()+1)+"-0"+this.state.selectedDay+"T12:00":
+    this.state.dateObject.year()+"-"+(this.state.dateObject.month()+1)+"-"+this.state.selectedDay+"T12:00"
+    );
+  }
+  createNewreminder = (day,Subject,locationCity,reminder, color) =>{
+    alert(this.state.selectedDay+" \n"+Subject+" \n"+locationCity+" \n"+reminder+" \n"+this.state.dateObject.year()+"-"+day+"-"+this.state.dateObject.month());
+    let cuantity=this.props.reminders.length;
+    let newreminder={
+      Id:cuantity,
+      Subject: Subject,
+      StartTime: new Date(2020,2,12,2,2),
+      EndTime: new Date(2020,2,12,2,30), 
+      Location: locationCity,
+      Description:reminder, 
+      Color:color};
+      this.props.add(newreminder);
+
+  }
+  render() { 
+    var weekdays = moment.weekdays();
+    let weekdayshortname = weekdays.map(day => {
+      return (
+        <th key={day} className="week-day">
+         {day}
+        </th>
+      );
+   });
+   
+   //blank space
+   let blanks = [];
+   for (let i = 0; i < this.firstDayOfMonth(); i++) {
+     blanks.push(
+       <td className="calendar-day empty">{""}</td>
+     );
+   }
+   //days of the month
+   let daysInMonth = [];
+  
+    for (let d = 1; d <=this.state.dateObject.daysInMonth(); d++) {
+      let currentDay = d === this.currentDay() ? "today" : "";   
+      daysInMonth.push(
+        <td key={d}   onClick={e=>{
+          let dateObject=this.state.dateObject;
+          let allmonths=this.state.allmonths;
+          let showFormNewreminder=!this.state.showFormNewreminder;
+          this.setState({dateObject,allmonths,showFormNewreminder,selectedDay:d});
+          
+        }} className={'calendar-day '+ currentDay}>
+          
+          {d}
+          <reminder/>
+        </td>
+      );}
+    //variable
+    var totalSlots = [...blanks, ...daysInMonth];
+    let rows = [];
+    let cells = [];
+    totalSlots.forEach((row, i) => {
+      if (i % 7 !== 0) {
+        cells.push(row); // if index not equal 7 that means not go to next week
+      } else {
+        rows.push(cells); // when reach next week we contain all td in last week to rows 
+        cells = []; // empty container 
+        cells.push(row); // in current loop we still push current row to new container
+      }
+      if (i === totalSlots.length - 1) { // when end loop we add remain date
+        rows.push(cells);
+      }
+    });
+    //total slots
+    let daysinmonth = rows.map((d, i) => {
+      return <tr>{d}</tr>;
+    });
+
+    
+  return (
+  <div>
+      
+           {this.createNewreminderForm()}
+     
+    <div className="calendar"> 
+    <div className="tail-datetime-calendar">
+            <div className="list-group-item-action.list-group-item-light list-group-item ">
+            <this.MonthList data={moment.months()} />
+            </div>
+    </div>
+    <table className="calendar-day">
+      <thead>
+      {weekdayshortname}
+      </thead>
+      <tbody>
+      {daysinmonth}
+
+      </tbody>
+    </table>
+  </div>
+    </div>  );
+  }
+}
+
+ 
+
+const mapStateToProps = state => {
+
+  return {
+      reminders: state.management.reminders,
+
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+    add: (reminders) => dispatch({
+        type: 'add_reminder',
+        playload: reminders
+    }),
+    delete: (id) => dispatch({
+        type: 'delete_reminder',
+        playload: id
+    }),
+    change: (id) => dispatch({
+        type: 'change_reminder',
+        playload: id
+    })
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar)
