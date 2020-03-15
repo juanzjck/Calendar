@@ -247,9 +247,9 @@ class Calendar extends React.Component {
     
       let currentDay = d === moment().toDate().getDate()  ? "today" : "";   
       daysInMonth.push(
-        <td key={d}  className={'calendar-day '+ currentDay}>
+        <td key={d}  className={'calendar-day '}>
           
-          {d}<div className="reminders-div">
+          <div className={currentDay}>{d}</div><div className="reminders-div">
           <Reminder day={d} month={this.props.dateObject.month()} year={this.props.dateObject.year()} />
           
           </div>
@@ -291,6 +291,7 @@ class Calendar extends React.Component {
             <this.MonthList data={moment.months()} />
             </div>
     </div>
+    
     <table className="calendar-day">
       <thead>
       {weekdayshortname}

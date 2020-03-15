@@ -65,7 +65,7 @@ td.calendar-day {
 table.calendar-month {
   width: 100%;
 }
-td.calendar-day.today {
+.today {
   color: #1e03ff;
   font-size: larger;
 } 
@@ -192,5 +192,21 @@ input[type="color"] {
 .actionsButton {
   width: 45%;
 }.buttonDiv {
+  text-align: center;
+}
+.weather>div>p {
+  width: 31%;
+  float: left;
+  padding: 20px;
+  border-left: solid;
+  text-align: center;
+}
+.weather>div>img {
+  float: left;
+  width: 68px !important;
+}
+.weather>label {
+  float: none;
+  width: 100%;
   text-align: center;
 }
