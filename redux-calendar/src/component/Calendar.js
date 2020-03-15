@@ -1,6 +1,6 @@
-import React from 'react';
+import React,{useState} from 'react';
 import moment from 'moment';
-import reminder from './Reminder';
+import Reminder from './Reminder';
 import {
     connect
 } from 'react-redux';
@@ -9,7 +9,10 @@ class Calendar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {allmonths :moment.months()}
+
   }
+  useForceUpdate =()=>useState()[1];
+
   firstDayOfMonth = () => {
     let dateObject = this.props.dateObject;
     let firstDay = moment(dateObject)
@@ -72,14 +75,20 @@ class Calendar extends React.Component {
     dateObject = moment(dateObject).set("month", monthNo); // change month value
     this.props.changeDateObject(dateObject);
   };
+  setMonthById = month => {
+    
+    let dateObject = Object.assign({}, this.props.dateObject);
+    dateObject = moment(dateObject).set("month", month); // change month value
+    this.props.changeDateObject(dateObject);
+  };
   createNewreminderForm = () =>{
     let Subject='';
     let locationCity='';
     let reminder='';
-    let color='#fff';
+    let color='#2f74b5';
     let startDate=this.stringDefaultStartTime();
     let ednDate=this.stringDefaultStartTime();
-    return(this.props.showFormNewreminder===true?<div class="popup_New_reminder">
+    return(this.props.showFormNewreminder===true?<div className="popup_New_reminder">
       <div class="modal-content">
         <div><a onClick={()=>{
                     this.props.changeshowFormNewreminder(false);        
@@ -126,15 +135,16 @@ class Calendar extends React.Component {
           <label>
             Color
          </label>
-         <input type="color" onChange={e=>{color=e.target.value}}></input>
-         <button className="newReminderButton btn btn-success" onClick={()=>{this.createNewreminder(1,Subject,locationCity,reminder,color,ednDate,startDate);}}> Save</button>
+         <input type="color" onChange={e=>{color=e.target.value}} defaultValue="#2f74b5" ></input>
+                                                                                               
+         <button className="newReminderButton btn btn-success" onClick={()=>{this.createNewreminder(Subject,locationCity,reminder,color,ednDate,startDate);}}> Save</button>
         </div>
       </div>
       :
       <div></div>);
   }
   stringDefaultStartTime = ()=>{
-    return (this.props.dateObject.month()<=9 && this.props.selectedDay<10?this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T10:30"
+    return (this.props.dateObject.month()<=9 && this.props.selectedDay<10?this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T00:00"
     :
     this.props.dateObject.month()<=9 && this.props.selectedDay>=10?
     this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-"+this.props.selectedDay+"T00:00":
@@ -144,7 +154,7 @@ class Calendar extends React.Component {
     );
   }
   stringDefaultEndTime = ()=>{
-    return (this.props.dateObject.month()<=9 && this.props.selectedDay<10?this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T10:30"
+    return (this.props.dateObject.month()<=9 && this.props.selectedDay<10?this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T12:00"
     :
     this.props.dateObject.month()<=9 && this.props.selectedDay>=10?
     this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-"+this.props.selectedDay+"T12:00":
@@ -153,8 +163,7 @@ class Calendar extends React.Component {
     this.props.dateObject.year()+"-"+(this.props.dateObject.month()+1)+"-"+this.props.selectedDay+"T12:00"
     );
   }
-  createNewreminder = (day,Subject,locationCity,reminder, color,ednDate,startDate) =>{
-    alert(this.props.selectedDay+" \n"+Subject+" \n"+locationCity+" \n"+reminder+" \n"+this.props.dateObject.year()+"-"+day+"-"+this.props.dateObject.month());
+  createNewreminder = (Subject,locationCity,reminder, color,ednDate,startDate) =>{
     let cuantity=this.props.reminders.length;
     let newreminder={
       Id:cuantity,
@@ -164,7 +173,11 @@ class Calendar extends React.Component {
       Location: locationCity,
       Description:reminder, 
       Color:color};
+
       this.props.add(newreminder);
+      this.props.changeshowFormNewreminder(false);
+   
+  
 
   }
   render() { 
@@ -186,15 +199,21 @@ class Calendar extends React.Component {
    }
    //days of the month
    let daysInMonth = [];
-  
+
     for (let d = 1; d <=this.props.dateObject.daysInMonth(); d++) {
-      let currentDay = d === this.currentDay() ? "today" : "";   
+    
+      let currentDay = d === moment().toDate().getDate()  ? "today" : "";   
       daysInMonth.push(
-        <td key={d}  onClick={e=>{this.props.changeshowFormNewreminder(true); this.props.changeSelectedDay(d);}} className={'calendar-day '+ currentDay}>
+        <td key={d}  className={'calendar-day '+ currentDay}>
           
-          {d}
-          <reminder/>
-        </td>
+          {d}<div className="reminders-div">
+          <Reminder day={d} month={this.props.dateObject.month()} year={this.props.dateObject.year()} />
+          
+          </div>
+         <div className="freespace" onClick={e=>{this.props.changeshowFormNewreminder(true); this.props.changeSelectedDay(d);}}>
+              <div>+</div>
+           </div>
+          </td>
       );}
     //variable
     var totalSlots = [...blanks, ...daysInMonth];
@@ -222,7 +241,7 @@ class Calendar extends React.Component {
   <div>
       
            {this.createNewreminderForm()}
-     
+            
     <div className="calendar"> 
     <div className="tail-datetime-calendar">
             <div className="list-group-item-action.list-group-item-light list-group-item ">

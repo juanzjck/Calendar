@@ -21,7 +21,7 @@ class Weather extends React.Component {
        
         for(let i=0;i<json.list.length;i++){
             var strings=(json.list[i].dt_txt).split(' ');
-            var dateText;
+            var dateText="";
             if(this.props.date.getMonth()+1<10){
                 if(this.props.date.getDate()<10){
                     dateText  =this.props.date.getFullYear()+'-0'+(this.props.date.getMonth()+1)+"-0"+this.props.date.getDate();

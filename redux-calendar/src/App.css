@@ -128,7 +128,7 @@ button.newReminderButton {
 }
 .popup_New_reminder {
   position: fixed;
-  z-index: 8;
+  z-index: 20;
   left: 0;
   top: 0;
   width: 100%;
@@ -149,4 +149,39 @@ a.btn.btn-danger {
 }
 input[type="color"] {
   width: 100%;
+}
+.freespace {
+  margin: auto;
+  width: 100%;
+  height: 49%;
+}
+.reminders {
+  height: 100%;
+}
+.reminders-div {
+  max-height: 30%;
+  overflow-y: hidden;
+  z-index: 100;
+}
+
+.reminders-div:hover {
+  height: 200px !important;
+  overflow-y: scroll;
+  position: absolute;
+  background: #ffff;
+  width: 250px !important;
+}
+.reminder {
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: #fff;
+ 
+}
+
+.freespace {
+  background: #fafafa;
+  text-align: center;
+}
+.freespace>div {
+  transform: translateY(50%);
 }
