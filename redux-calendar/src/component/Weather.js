@@ -18,27 +18,11 @@ class Weather extends React.Component {
         var res = await fetch(apiURL);
         var json = await res.json();
         var selectedDateWather=null;
-       
+      
         for(let i=0;i<json.list.length;i++){
             var strings=(json.list[i].dt_txt).split(' ');
-            var dateText="";
-            if(this.props.date.getMonth()+1<10){
-                if(this.props.date.getDate()<10){
-                    dateText  =this.props.date.getFullYear()+'-0'+(this.props.date.getMonth()+1)+"-0"+this.props.date.getDate();
-                }else{
-                    dateText  =this.props.date.getFullYear()+'-0'+(this.props.date.getMonth()+1)+"-"+this.props.date.getDate();
-                }              
-            }
-            if(this.props.date.getMonth()+1>=10){
-                if(this.props.date.getDate()<10){
-                    dateText  =this.props.date.getFullYear()+'-'+(this.props.date.getMonth()+1)+"-0"+this.props.date.getDate();
-                }else{
-                    dateText  =this.props.date.getFullYear()+'-'+(this.props.date.getMonth()+1)+"-"+this.props.date.getDate();
-                }
-               
-            }
+            var dateText=""+this.props.year+"-"+this.props.month+"-"+this.props.day;
           
-        
             if(dateText===strings[0]){
       
                     selectedDateWather=json.list[i];

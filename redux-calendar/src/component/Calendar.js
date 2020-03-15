@@ -20,6 +20,30 @@ class Calendar extends React.Component {
                  .format("d"); 
    return firstDay;
   };
+  LastDayOfMonth = () => {
+    let dateObject = this.props.dateObject;
+    let LastDay = moment(dateObject)
+                 .endOf("month")
+                 .format("d"); 
+   return LastDay;
+  };
+ daysMonthOfBeforeCurrentMonth = () => {
+    let monthNo=this.props.dateObject.month()-1;
+    let dateObject = moment().set("month", monthNo);
+    let daysInMonth = moment(dateObject)
+                 .endOf("month")
+                 .daysInMonth(); 
+   return daysInMonth;
+  };
+ 
+  daysMonthOfNextCurrentMonth = () => {
+    let monthNo=this.props.dateObject.month()+1;
+    let dateObject = moment().set("month", monthNo);
+    let daysInMonth = moment(dateObject)
+                 .endOf("month")
+                 .daysInMonth(); 
+   return daysInMonth;
+  };
   currentDay = () => {  
     return this.props.dateObject.format("D");
   };
@@ -97,7 +121,7 @@ class Calendar extends React.Component {
         <label>
            Title
         </label>
-        <input class="form-control" type="text" placeholder="..." minLength={1}  maxLength={30}  onChange={e=>{Subject=e.target.value}} required></input>
+        <input class="form-control" type="text" placeholder="..." minLength={1}  maxLength={10}  onChange={e=>{Subject=e.target.value}} required></input>
         <label>
             reminder
         </label>
@@ -146,7 +170,7 @@ class Calendar extends React.Component {
   stringDefaultStartTime = ()=>{
     return (this.props.dateObject.month()<=9 && this.props.selectedDay<10?this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T00:00"
     :
-    this.props.dateObject.month()<=9 && this.props.selectedDay>=10?
+    this.props.dateObject.month()<9 && this.props.selectedDay>=10?
     this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-"+this.props.selectedDay+"T00:00":
     this.props.dateObject.month()>9 && this.props.selectedDay<10?
     this.props.dateObject.year()+"-"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T00:00":
@@ -175,11 +199,15 @@ class Calendar extends React.Component {
       Color:color};
 
       this.props.add(newreminder);
+      this.props.sort();
       this.props.changeshowFormNewreminder(false);
    
   
 
   }
+  componentWillMount() {
+    this.props.sort();
+}
   render() { 
     var weekdays = moment.weekdays();
     let weekdayshortname = weekdays.map(day => {
@@ -192,11 +220,26 @@ class Calendar extends React.Component {
    
    //blank space
    let blanks = [];
+   let daysOfBeforeMonth=this.daysMonthOfBeforeCurrentMonth();
    for (let i = 0; i < this.firstDayOfMonth(); i++) {
-     blanks.push(
-       <td className="calendar-day empty">{""}</td>
-     );
+    daysOfBeforeMonth--;
    }
+   for (let i = 0; i < this.firstDayOfMonth(); i++) {
+    daysOfBeforeMonth++;
+     blanks.push(
+       <td className="calendar-day empty">{daysOfBeforeMonth}</td>
+     );
+   
+   }
+   let blanksNextMonth = [];
+   let LasrDayOfCurrentMonth=Number(this.LastDayOfMonth());
+   for(let i =0;i< 7-(LasrDayOfCurrentMonth+1);i++ ){
+   
+    blanksNextMonth.push(
+      <td className="calendar-day empty">{i+1}</td>
+    );
+   }  
+   
    //days of the month
    let daysInMonth = [];
 
@@ -216,7 +259,7 @@ class Calendar extends React.Component {
           </td>
       );}
     //variable
-    var totalSlots = [...blanks, ...daysInMonth];
+    var totalSlots = [...blanks, ...daysInMonth,...blanksNextMonth];
     let rows = [];
     let cells = [];
     totalSlots.forEach((row, i) => {
@@ -298,6 +341,9 @@ const mapDispatchToProps = dispatch => ({
      changeshowFormNewreminder:(value)=>dispatch({
       type: 'change_showFormNewreminder',
       playload: value
-     })
+     }),
+      sort: () => dispatch({
+        type: 'sort_reminders',
+    })
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar)

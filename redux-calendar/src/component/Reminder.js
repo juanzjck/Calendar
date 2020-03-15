@@ -10,8 +10,11 @@ class Reminder extends React.Component {
         super(props);
         this.state = { showDetail:false }
     }
+ 
     getRemainderByDate= (day,month,year)=>{
         var  remainders=[];
+
+        
         remainders= this.props.reminders.map( (doc)=>{
           
            let yearStored=doc.StartTime.split('-')[0];
@@ -42,6 +45,21 @@ class Reminder extends React.Component {
         );
     }
     detailReminder=()=>{
+        let Subject;
+        let locationCity;
+        let reminder;
+        let color;
+        let startDate;
+        let ednDate;
+        if(this.state.showDetail===true){
+            Subject=this.state.reminder.Subject;
+           locationCity=this.state.reminder.Location;
+            reminder=this.state.reminder.Description;
+            color=this.state.reminder.Color;
+             startDate=this.state.reminder.StartTime;
+             ednDate=this.state.reminder.EndTime;
+        }
+      
         return(
             this.state.showDetail===true?<div className="popup_New_reminder">
                     <div class="modal-content">
@@ -51,10 +69,76 @@ class Reminder extends React.Component {
                             <h1>    
                                     {this.state.reminder.Subject}
                             </h1>
-                            <Weather day={this.getDay(this.props.day)} year={this.props.year} month={this.getMonth(this.props.month)}/>
-                        </div> 
+
+                            <Weather city={this.state.reminder.Location} day={this.getDay(this.props.day)} year={this.props.year} month={this.getMonth(this.props.month)}/>
+                            <label>
+                            Title (Subject)
+                            </label>
+                            <input class="form-control" type="text" placeholder="..." minLength={1}  maxLength={10}  onChange={e=>{Subject=e.target.value}} defaultValue={this.state.reminder.Subject} required></input>
+                            <label>
+                                reminder
+                            </label>
+                            <textarea class="form-control" type="text" placeholder="reminder...." minLength={1} onChange={e=>{reminder=e.target.value}}  maxLength={30} defaultValue={this.state.reminder.Description} required></textarea>
+                            <label>
+                            Location (City)
+                            </label>
+                            <input class="form-control" type="text" placeholder="City" onChange={e=>{locationCity=e.target.value}} defaultValue={this.state.reminder.Location}  required></input>
+                            <label>
+                            Start time
+                            </label>
+                            <input
+                                id="datetime-local"
+                                label="Next appointment"
+                                type="datetime-local"
+                                defaultValue={this.state.reminder.StartTime}
+                                onChange={e=>{startDate=e.target.value}}
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                            />
+                            <label>
+                            End time
+                            </label>
+                            <input
+                                id="datetime-local"
+                                label="Next appointment"
+                                type="datetime-local"
+                                defaultValue={this.state.reminder.EndTime}
+                                onChange={e=>{ednDate=e.target.value}}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            <label>
+                                Color
+                            </label>
+                            <input type="color" onChange={e=>{color=e.target.value}} defaultValue={this.state.reminder.Color} ></input>
+                            <div className="buttonDiv">
+                                <button className="newReminderButton actionsButton btn btn-success" onClick={()=>{this.Changereminder(Subject,locationCity,reminder,color,ednDate,startDate);}}> Save</button>
+                                <button onClick={()=>{this.DeleteReminder()}} type="button" class="delete actionsButton btn btn-danger">Delete</button>
+                            
+                            </div>                                                                                  
+                           </div> 
                 </div>:<div></div>
         );
+    }
+   Changereminder=(Subject,locationCity,reminder,color,ednDate,startDate)=>{
+    let newreminder={
+        Id:this.state.reminder.Id,
+        Subject: Subject,
+        StartTime: startDate,
+        EndTime:ednDate , 
+        Location: locationCity,
+        Description:reminder, 
+        Color:color};
+       
+    this.props.change(newreminder); 
+    this.setState({showDetail:false});  
+    this.props.sort();   
+    }
+    DeleteReminder=()=>{
+           this.props.delete(this.state.reminder.Id);
+           this.setState({showDetail:false});
     }
     render() { 
         return (  
@@ -71,9 +155,11 @@ const mapDispatchToProps = dispatch => ({
         type: 'delete_reminder',
         playload: id
     }),
-    change: (id) => dispatch({
+    change: (reminder) => dispatch({
         type: 'change_reminder',
-        playload: id
+        playload: reminder
+    }),  sort: () => dispatch({
+        type: 'sort_reminders',
     })
 });
 const mapStateToProps = state => {

@@ -161,15 +161,19 @@ input[type="color"] {
 .reminders-div {
   max-height: 30%;
   overflow-y: hidden;
-  z-index: 100;
+ z-index: 100;
 }
 
 .reminders-div:hover {
   height: 200px !important;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: absolute;
   background: #ffff;
-  width: 250px !important;
+  min-width: 150px !important;
+  max-width: 150px !important;
+  -webkit-box-shadow: 10px 6px 26px -14px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 6px 26px -14px rgba(0,0,0,0.75);
+  box-shadow: 10px 6px 26px -14px rgba(0,0,0,0.75);
 }
 .reminder {
   border-bottom: solid;
@@ -184,4 +188,9 @@ input[type="color"] {
 }
 .freespace>div {
   transform: translateY(50%);
+}
+.actionsButton {
+  width: 45%;
+}.buttonDiv {
+  text-align: center;
 }
