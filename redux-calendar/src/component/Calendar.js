@@ -5,26 +5,23 @@ import {
     connect
 } from 'react-redux';
 
-
-
-
 class Calendar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { dateObject: moment(), allmonths :moment.months(), showFormNewreminder:false, selectedDay:0}
+    this.state = {allmonths :moment.months()}
   }
   firstDayOfMonth = () => {
-    let dateObject = this.state.dateObject;
+    let dateObject = this.props.dateObject;
     let firstDay = moment(dateObject)
                  .startOf("month")
                  .format("d"); 
    return firstDay;
   };
   currentDay = () => {  
-    return this.state.dateObject.format("D");
+    return this.props.dateObject.format("D");
   };
   month = () => {
-    return this.state.dateObject.format("MMMM");
+    return this.props.dateObject.format("MMMM");
   };
   MonthList = props => {
 
@@ -71,26 +68,21 @@ class Calendar extends React.Component {
   
   setMonth = month => {
     let monthNo = moment.months().indexOf(month);// get month number 
-    let dateObject = Object.assign({}, this.state.dateObject);
+    let dateObject = Object.assign({}, this.props.dateObject);
     dateObject = moment(dateObject).set("month", monthNo); // change month value
-    this.setState({
-      dateObject: dateObject // add to state
-    });
-    alert(dateObject);
+    this.props.changeDateObject(dateObject);
   };
   createNewreminderForm = () =>{
     let Subject='';
     let locationCity='';
     let reminder='';
     let color='#fff';
-    return(this.state.showFormNewreminder===true?<div class="popup_New_reminder">
+    let startDate=this.stringDefaultStartTime();
+    let ednDate=this.stringDefaultStartTime();
+    return(this.props.showFormNewreminder===true?<div class="popup_New_reminder">
       <div class="modal-content">
         <div><a onClick={()=>{
-                    let dateObject=this.state.dateObject;
-                    let allmonths=this.state.allmonths;
-                    let showFormNewreminder=false;
-                    let oldDay=this.state.selectedDay;
-                    this.setState({dateObject,allmonths,showFormNewreminder,selectedDay:oldDay});
+                    this.props.changeshowFormNewreminder(false);        
         }} className="btn btn-danger">X</a></div>
         <h1>New reminder</h1>
         <label>
@@ -113,7 +105,7 @@ class Calendar extends React.Component {
             label="Next appointment"
             type="datetime-local"
             defaultValue={  this.stringDefaultStartTime()}
-           
+            onChange={e=>{startDate=e.target.value}}
             InputLabelProps={{
               shrink: true,
             }}
@@ -126,7 +118,7 @@ class Calendar extends React.Component {
             label="Next appointment"
             type="datetime-local"
             defaultValue={  this.stringDefaultEndTime()}
-           
+            onChange={e=>{ednDate=e.target.value}}
             InputLabelProps={{
               shrink: true,
             }}
@@ -135,40 +127,40 @@ class Calendar extends React.Component {
             Color
          </label>
          <input type="color" onChange={e=>{color=e.target.value}}></input>
-         <button className="newReminderButton btn btn-success" onClick={()=>{this.createNewreminder(1,Subject,locationCity,reminder,color);}}> Save</button>
+         <button className="newReminderButton btn btn-success" onClick={()=>{this.createNewreminder(1,Subject,locationCity,reminder,color,ednDate,startDate);}}> Save</button>
         </div>
       </div>
       :
       <div></div>);
   }
   stringDefaultStartTime = ()=>{
-    return (this.state.dateObject.month()<=9 && this.state.selectedDay<10?this.state.dateObject.year()+"-0"+(this.state.dateObject.month()+1)+"-0"+this.state.selectedDay+"T10:30"
+    return (this.props.dateObject.month()<=9 && this.props.selectedDay<10?this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T10:30"
     :
-    this.state.dateObject.month()<=9 && this.state.selectedDay>=10?
-    this.state.dateObject.year()+"-0"+(this.state.dateObject.month()+1)+"-"+this.state.selectedDay+"T00:00":
-    this.state.dateObject.month()>9 && this.state.selectedDay<10?
-    this.state.dateObject.year()+"-"+(this.state.dateObject.month()+1)+"-0"+this.state.selectedDay+"T00:00":
-    this.state.dateObject.year()+"-"+(this.state.dateObject.month()+1)+"-"+this.state.selectedDay+"T00:00"
+    this.props.dateObject.month()<=9 && this.props.selectedDay>=10?
+    this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-"+this.props.selectedDay+"T00:00":
+    this.props.dateObject.month()>9 && this.props.selectedDay<10?
+    this.props.dateObject.year()+"-"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T00:00":
+    this.props.dateObject.year()+"-"+(this.props.dateObject.month()+1)+"-"+this.props.selectedDay+"T00:00"
     );
   }
   stringDefaultEndTime = ()=>{
-    return (this.state.dateObject.month()<=9 && this.state.selectedDay<10?this.state.dateObject.year()+"-0"+(this.state.dateObject.month()+1)+"-0"+this.state.selectedDay+"T10:30"
+    return (this.props.dateObject.month()<=9 && this.props.selectedDay<10?this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T10:30"
     :
-    this.state.dateObject.month()<=9 && this.state.selectedDay>=10?
-    this.state.dateObject.year()+"-0"+(this.state.dateObject.month()+1)+"-"+this.state.selectedDay+"T12:00":
-    this.state.dateObject.month()>9 && this.state.selectedDay<10?
-    this.state.dateObject.year()+"-"+(this.state.dateObject.month()+1)+"-0"+this.state.selectedDay+"T12:00":
-    this.state.dateObject.year()+"-"+(this.state.dateObject.month()+1)+"-"+this.state.selectedDay+"T12:00"
+    this.props.dateObject.month()<=9 && this.props.selectedDay>=10?
+    this.props.dateObject.year()+"-0"+(this.props.dateObject.month()+1)+"-"+this.props.selectedDay+"T12:00":
+    this.props.dateObject.month()>9 && this.props.selectedDay<10?
+    this.props.dateObject.year()+"-"+(this.props.dateObject.month()+1)+"-0"+this.props.selectedDay+"T12:00":
+    this.props.dateObject.year()+"-"+(this.props.dateObject.month()+1)+"-"+this.props.selectedDay+"T12:00"
     );
   }
-  createNewreminder = (day,Subject,locationCity,reminder, color) =>{
-    alert(this.state.selectedDay+" \n"+Subject+" \n"+locationCity+" \n"+reminder+" \n"+this.state.dateObject.year()+"-"+day+"-"+this.state.dateObject.month());
+  createNewreminder = (day,Subject,locationCity,reminder, color,ednDate,startDate) =>{
+    alert(this.props.selectedDay+" \n"+Subject+" \n"+locationCity+" \n"+reminder+" \n"+this.props.dateObject.year()+"-"+day+"-"+this.props.dateObject.month());
     let cuantity=this.props.reminders.length;
     let newreminder={
       Id:cuantity,
       Subject: Subject,
-      StartTime: new Date(2020,2,12,2,2),
-      EndTime: new Date(2020,2,12,2,30), 
+      StartTime: startDate,
+      EndTime:ednDate , 
       Location: locationCity,
       Description:reminder, 
       Color:color};
@@ -195,16 +187,10 @@ class Calendar extends React.Component {
    //days of the month
    let daysInMonth = [];
   
-    for (let d = 1; d <=this.state.dateObject.daysInMonth(); d++) {
+    for (let d = 1; d <=this.props.dateObject.daysInMonth(); d++) {
       let currentDay = d === this.currentDay() ? "today" : "";   
       daysInMonth.push(
-        <td key={d}   onClick={e=>{
-          let dateObject=this.state.dateObject;
-          let allmonths=this.state.allmonths;
-          let showFormNewreminder=!this.state.showFormNewreminder;
-          this.setState({dateObject,allmonths,showFormNewreminder,selectedDay:d});
-          
-        }} className={'calendar-day '+ currentDay}>
+        <td key={d}  onClick={e=>{this.props.changeshowFormNewreminder(true); this.props.changeSelectedDay(d);}} className={'calendar-day '+ currentDay}>
           
           {d}
           <reminder/>
@@ -263,7 +249,9 @@ const mapStateToProps = state => {
 
   return {
       reminders: state.management.reminders,
-
+      selectedDay:state.management.selectedDay,
+      dateObject:state.management.dateObject,
+      showFormNewreminder:state.management.showFormNewreminder,
   }
 };
 
@@ -279,6 +267,18 @@ const mapDispatchToProps = dispatch => ({
     change: (id) => dispatch({
         type: 'change_reminder',
         playload: id
-    })
+    }),
+    changeSelectedDay:(day)=>dispatch({
+      type: 'change_selectedday',
+      playload: day
+     }),
+     changeDateObject:(date)=>dispatch({
+      type: 'change_dateObject',
+      playload: date
+     }),
+     changeshowFormNewreminder:(value)=>dispatch({
+      type: 'change_showFormNewreminder',
+      playload: value
+     })
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar)
