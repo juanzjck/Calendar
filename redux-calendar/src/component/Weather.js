@@ -11,6 +11,16 @@ class Weather extends React.Component {
         icon:''
      }
     }
+    getDay = (day)=>{
+        return(
+            day<=9?("0"+day):(""+day)
+        );
+    }
+    getMonth = (month)=>{
+        return(
+            month<9?("0"+(month+1)):(""+(month+1))
+        );
+    }
     //get the weather filter by date--- the api only give 40 history data, for more https://openweathermap.org/price#history
     getweather=async (e)=>{
         try {
@@ -18,11 +28,11 @@ class Weather extends React.Component {
         var res = await fetch(apiURL);
         var json = await res.json();
         var selectedDateweather=null;
-      
+        var dateText=""+this.props.year+"-"+this.props.month+"-"+this.props.day;
+          
         for(let i=0;i<json.list.length;i++){
             var strings=(json.list[i].dt_txt).split(' ');
-            var dateText=""+this.props.year+"-"+this.props.month+"-"+this.props.day;
-          
+         
             if(dateText===strings[0]){
       
                     selectedDateweather=json.list[i];
@@ -46,8 +56,8 @@ class Weather extends React.Component {
         if(selectedDateweather===null){
                 
                  var today = new Date();
-               
-                if (this.props.date.getDate()===today.getDate()){
+                 
+                if (dateText===(today.getFullYear()+"-"+this.getMonth(today.getMonth())+"-"+this.getDay(today.getDate()))){
                     const apiURLCurrentWeather='http://api.openweathermap.org/data/2.5/weather?q='+e.toLowerCase()+'&appid='+weather_KEY;
                      res = await fetch(apiURLCurrentWeather);
                      json = await res.json();
@@ -83,8 +93,8 @@ class Weather extends React.Component {
            <div>
            <img src={"http://openweathermap.org/img/wn/"+this.state.icon+"@2x.png"}/>
             <p>{this.state.main}</p>
-            <p>{this.state.temp}°C </p>
-            <p>{this.state.speedWind}m/s</p>
+            <p><span>Temp:</span> {this.state.temp}°C </p>
+            <p><span>wind's speed: </span>{this.state.speedWind}m/s</p>
            </div>
           
     </div>:

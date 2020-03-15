@@ -210,3 +210,6 @@ input[type="color"] {
   width: 100%;
   text-align: center;
 }
+p>span {
+  font-weight: 700;
+}
