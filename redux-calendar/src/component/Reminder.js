@@ -16,12 +16,16 @@ class Reminder extends React.Component {
 
         
         remainders= this.props.reminders.map( (doc)=>{
-          
+            //start
            let yearStored=doc.StartTime.split('-')[0];
            let monthStored=doc.StartTime.split('-')[1];
            let dayStored=doc.StartTime.split('-')[2].split('T')[0];
+           //end 
+           let endYearStored=doc.EndTime.split('-')[0];
+           let endMonthStored=doc.EndTime.split('-')[1];
+           let endDayStored=doc.EndTime.split('-')[2].split('T')[0];
            
-           if((yearStored+monthStored+dayStored)===(year+month+day)){
+           if((yearStored+monthStored+dayStored)===(year+month+day) ||  Number(month)>=Number(monthStored)  && Number(month)<=Number(endMonthStored) && Number(year)>=Number(yearStored) && Number(year)<=Number(endYearStored)  && day<=Number(endDayStored) && day>=Number(dayStored)){
               // alert(yearStored+monthStored+day+ "work but somewhere are a bug");
             return(<div className="reminder" onClick={(e)=>{this.getDetail(doc)}} style={{background:(""+doc.Color), textAlign:'center', color:'#ffff', padding:'1px'}}>
                     {doc.Subject}
