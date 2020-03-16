@@ -213,3 +213,9 @@ input[type="color"] {
 p>span {
   font-weight: 700;
 }
+.freespace:hover {
+  background: #b0b0b0;
+}td.calendar-month.currentMonth {
+  color: #2f74b5;
+  font-weight: 700;
+}

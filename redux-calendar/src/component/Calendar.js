@@ -51,13 +51,18 @@ class Calendar extends React.Component {
     return this.props.dateObject.format("MMMM");
   };
   MonthList = props => {
-
+    let currentMonth=(month)=>{
+       
+      return(
+   
+        Number(this.props.dateObject.format("M"))===Number(moment.months().indexOf(month)+1)?'currentMonth':''
+    );}
     let months = [];
     props.data.map(data => {
       months.push(
         <td
         key={data}
-        className="calendar-month"
+        className={"calendar-month "+currentMonth(data)}
         onClick={e => {
           this.setMonth(data);
         }}
@@ -85,7 +90,7 @@ class Calendar extends React.Component {
     <table className="calendar-month">
       <thead>
         <tr>
-          <th colSpan="4">Select a Month</th>
+  <th colSpan="4">Select a Month - {this.props.dateObject.format('YYYY')}</th>
         </tr>
       </thead>
       <tbody>{monthlist}</tbody>
@@ -227,7 +232,12 @@ class Calendar extends React.Component {
    for (let i = 0; i < this.firstDayOfMonth(); i++) {
     daysOfBeforeMonth++;
      blanks.push(
-       <td className="calendar-day empty">{daysOfBeforeMonth}</td>
+       <td className="calendar-day empty" >{daysOfBeforeMonth}
+     
+     <div className="freespace" onClick={e=>{this.setMonthById(this.props.dateObject.format('M')-2); }}>
+              <div> {"<"} </div>
+           </div>
+       </td>
      );
    
    }
@@ -236,7 +246,13 @@ class Calendar extends React.Component {
    for(let i =0;i< 7-(LasrDayOfCurrentMonth+1);i++ ){
    
     blanksNextMonth.push(
-      <td className="calendar-day empty">{i+1}</td>
+      <td className="calendar-day empty">
+        {i+1}
+   
+          <div className="freespace" onClick={e=>{this.setMonthById(this.props.dateObject.format('M')); }}>
+              <div>></div>
+           </div>
+      </td>
     );
    }  
    
