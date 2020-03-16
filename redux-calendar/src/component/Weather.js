@@ -1,5 +1,5 @@
 import React from 'react';
-import  WATHER_KEY from '../key';
+import  weather_KEY from '../key';
 
 class Weather extends React.Component {
     constructor(props) {
@@ -11,60 +11,54 @@ class Weather extends React.Component {
         icon:''
      }
     }
-    //get the wather filter by date--- the api only give 40 history data, for more https://openweathermap.org/price#history
-    getWather=async (e)=>{
+    getDay = (day)=>{
+        return(
+            day<=9?("0"+day):(""+day)
+        );
+    }
+    getMonth = (month)=>{
+        return(
+            month<9?("0"+(month+1)):(""+(month+1))
+        );
+    }
+    //get the weather filter by date--- the api only give 40 history data, for more https://openweathermap.org/price#history
+    getweather=async (e)=>{
         try {
-        const apiURL='http://api.openweathermap.org/data/2.5/forecast?q='+e.toLowerCase()+'&appid='+WATHER_KEY;
+        const apiURL='http://api.openweathermap.org/data/2.5/forecast?q='+e.toLowerCase()+'&appid='+weather_KEY;
         var res = await fetch(apiURL);
         var json = await res.json();
-        var selectedDateWather=null;
-       
+        var selectedDateweather=null;
+        var dateText=""+this.props.year+"-"+this.props.month+"-"+this.props.day;
+          
         for(let i=0;i<json.list.length;i++){
             var strings=(json.list[i].dt_txt).split(' ');
-            var dateText;
-            if(this.props.date.getMonth()+1<10){
-                if(this.props.date.getDate()<10){
-                    dateText  =this.props.date.getFullYear()+'-0'+(this.props.date.getMonth()+1)+"-0"+this.props.date.getDate();
-                }else{
-                    dateText  =this.props.date.getFullYear()+'-0'+(this.props.date.getMonth()+1)+"-"+this.props.date.getDate();
-                }              
-            }
-            if(this.props.date.getMonth()+1>=10){
-                if(this.props.date.getDate()<10){
-                    dateText  =this.props.date.getFullYear()+'-'+(this.props.date.getMonth()+1)+"-0"+this.props.date.getDate();
-                }else{
-                    dateText  =this.props.date.getFullYear()+'-'+(this.props.date.getMonth()+1)+"-"+this.props.date.getDate();
-                }
-               
-            }
-          
-        
+         
             if(dateText===strings[0]){
       
-                    selectedDateWather=json.list[i];
+                    selectedDateweather=json.list[i];
                     break;
             }
            
         }
    
-        if(selectedDateWather!==null){
+        if(selectedDateweather!==null){
            
             await this.setState(
                 {
-                    main:selectedDateWather.weather[0].main,
-                    temp:selectedDateWather.main.temp,
-                    icon:selectedDateWather.weather[0].icon,
-                    speedWind:selectedDateWather.wind.speed
+                    main:selectedDateweather.weather[0].main,
+                    temp:selectedDateweather.main.temp,
+                    icon:selectedDateweather.weather[0].icon,
+                    speedWind:selectedDateweather.wind.speed
                 }
             )
         }
         //get current weather
-        if(selectedDateWather===null){
+        if(selectedDateweather===null){
                 
                  var today = new Date();
-               
-                if (this.props.date.getDate()===today.getDate()){
-                    const apiURLCurrentWeather='http://api.openweathermap.org/data/2.5/weather?q='+e.toLowerCase()+'&appid='+WATHER_KEY;
+                 
+                if (dateText===(today.getFullYear()+"-"+this.getMonth(today.getMonth())+"-"+this.getDay(today.getDate()))){
+                    const apiURLCurrentWeather='http://api.openweathermap.org/data/2.5/weather?q='+e.toLowerCase()+'&appid='+weather_KEY;
                      res = await fetch(apiURLCurrentWeather);
                      json = await res.json();
 
@@ -89,20 +83,24 @@ class Weather extends React.Component {
       
     }
     componentDidMount() {
-        this.getWather(this.props.city);
+        this.getweather(this.props.city);
        
     }
-    getWatherUI=()=>{
-        return  (this.state.main!=='')?<div>
+    getweatherUI=()=>{
+        return  (this.state.main!=='')?<div className="weather">
         <label>
-            <h5>Wather</h5></label>
-        <p>{this.state.main}
-            <br/> {this.state.temp}°C
-            <br/> {this.state.speedWind}m/s</p>
+            <h5>weather</h5></label>
+           <div>
+           <img src={"http://openweathermap.org/img/wn/"+this.state.icon+"@2x.png"}/>
+            <p>{this.state.main}</p>
+            <p><span>Temp:</span> {this.state.temp}°C </p>
+            <p><span>wind's speed: </span>{this.state.speedWind}m/s</p>
+           </div>
+          
     </div>:
     <div>
         <label>
-            <h5>Wather</h5></label>
+            <h5>weather</h5></label>
         <p>There are no info</p>
     </div>;
     }
@@ -111,7 +109,7 @@ class Weather extends React.Component {
         return (
             <div>
 
-                  {this.getWatherUI()}
+                  {this.getweatherUI()}
 
             </div>
          );
