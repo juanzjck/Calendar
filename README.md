@@ -20,7 +20,7 @@ A simple calendar app.
 <h2>Dependences</h2>
 <ul>
  <li>
--@syncfusion/ej2-react-schedule v 17.4.51
+ moment 2.24.0
  </li>
   <li>
 -Redux v 4.0.5
