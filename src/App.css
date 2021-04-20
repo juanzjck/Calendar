@@ -1,0 +1,221 @@
+td.e-header-cells {
+  background: #2288c4 !important;
+  color: #fff !important;
+}
+input#Color {
+  height: 10px !important;
+  -webkit-appearance: square-button;
+  width: 44px;
+  background-color: white;
+  cursor: default;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(255, 255, 255);
+  border-image: initial;
+  padding: 0px 0px;
+}
+.template-wrap {
+  width: 100% !important;
+}
+input.form-control:hover {
+  border-bottom: solid;
+  border-color: #ff5555;
+  border-top: dimgrey;
+  border-left: dimgray;
+  border-right: dimgray;
+  border-radius: 0px;
+}.e-subject-wrap>div>label>h5 {
+  font-size: 13px;
+  font-weight: bold;
+}
+.e-appointment {
+  height: 20px !important;
+}
+.template-wrap {
+  text-align: center;
+}
+thead {
+  background: #2f74b5;
+  color: #fff;
+}
+table.calendar-day {
+  width: 100%;
+}
+.calendar {
+  padding: 43px;
+}
+th.week-day {
+  padding: 4px;
+  text-align: center;
+}
+td.calendar-day {
+  height: 113px;
+}
+td.calendar-day {
+    border: solid;
+    border-color: #2b2b2b;
+    border-width: 1px;
+    vertical-align: baseline;
+}
+
+.list-group-item.list-group-item-action.list-group-item-light {
+  text-align: center;
+  font-size: 24px;
+}
+table.calendar-month {
+  width: 100%;
+}
+.today {
+  color: #1e03ff;
+  font-size: larger;
+} 
+/*popup*/
+
+/* Popup container */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+button.newReminderButton {
+  margin: 10px;
+}
+.popup_New_reminder {
+  position: fixed;
+  z-index: 20;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+/* Modal Content */
+.modal-content {
+  width: 80% !important;
+  margin: auto;
+  padding: 18px;
+  margin-top: 59px;
+}
+a.btn.btn-danger {
+  color: #fff;
+}
+input[type="color"] {
+  width: 100%;
+}
+.freespace {
+  margin: auto;
+  width: 100%;
+  height: 49%;
+}
+.reminders {
+  height: 100%;
+}
+.reminders-div {
+  max-height: 30%;
+  overflow-y: hidden;
+ z-index: 100;
+}
+
+.reminders-div:hover {
+  height: 200px !important;
+  overflow-y: auto;
+  position: absolute;
+  background: #ffff;
+  min-width: 150px !important;
+  max-width: 150px !important;
+  -webkit-box-shadow: 10px 6px 26px -14px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 6px 26px -14px rgba(0,0,0,0.75);
+  box-shadow: 10px 6px 26px -14px rgba(0,0,0,0.75);
+}
+.reminder {
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: #fff;
+ 
+}
+
+.freespace {
+  background: #fafafa;
+  text-align: center;
+}
+.freespace>div {
+  transform: translateY(50%);
+}
+.actionsButton {
+  width: 45%;
+}.buttonDiv {
+  text-align: center;
+}
+.weather>div>p {
+  width: 31%;
+  float: left;
+  padding: 20px;
+  border-left: solid;
+  text-align: center;
+}
+.weather>div>img {
+  float: left;
+  width: 68px !important;
+}
+.weather>label {
+  float: none;
+  width: 100%;
+  text-align: center;
+}
+p>span {
+  font-weight: 700;
+}
+.freespace:hover {
+  background: #b0b0b0;
+}td.calendar-month.currentMonth {
+  color: #2f74b5;
+  font-weight: 700;
+}
