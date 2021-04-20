@@ -1,9 +1,10 @@
+
 import React from 'react';
 import './App.css';
 import Calendar from './component/Calendar';
 import {Provider} from 'react-redux';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-open-weather/lib/css/ReactWeather.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'react-open-weather/lib/css/ReactWeather.css';
 
 /*
 import mapStateToProps from './store/mapStateToProps';

@@ -6,7 +6,7 @@ input#Color {
   height: 10px !important;
   -webkit-appearance: square-button;
   width: 44px;
-  background-color: buttonface;
+  background-color: white;
   cursor: default;
   border-width: 1px;
   border-style: solid;

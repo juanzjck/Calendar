@@ -13,7 +13,7 @@
     "a-color-picker": "^1.2.1",
     "bootstrap": "^4.4.1",
     "date-fns": "^2.10.0",
-    "react": "^16.13.0",
+    "react": "^17.0.1",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-color": "^2.18.0",
     "react-dom": "^16.13.0",
@@ -24,11 +24,12 @@
     "react-xml-parser": "^1.1.6",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "style-loader": "^2.0.0",
     "xml2js": "^0.4.23"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "serve:dev": "webpack --mode 'development' --display-error-details  && npx serve dist -s",
+    "build": "webpack",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -46,5 +47,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.8",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.13.9",
+    "@babel/preset-react": "^7.12.13",
+    "css-loader": "^5.2.4",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^4.3.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   }
 }
